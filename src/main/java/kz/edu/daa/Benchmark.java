@@ -29,6 +29,15 @@ public class Benchmark {
                 }
             }
         }
+        try (BufferedWriter out = Files.newBufferedWriter(Path.of("results/build_heap.csv"))) {
+            out.write("workload,variant,structure,n,time_ms,steps,moves,comparisons\n");
+            for (int n : sizes) {
+                for (String order : new String[]{"random", "descending"}) {
+                    out.write(run("BUILD", order, "RepeatedInsert", n));
+                    out.write(run("BUILD", order, "FloydBuild", n));
+                }
+            }
+        }
         System.out.println("Saved results/results.csv");
     }
 
@@ -36,7 +45,7 @@ public class Benchmark {
         Random random = new Random(42);
         int[] data = new int[n];
         for (int i = 0; i < n; i++) {
-            data[i] = random.nextInt(1000000);
+            data[i] = variant.equals("descending") ? n - i : random.nextInt(1000000);
         }
         int[] indices = new int[10000];
         for (int i = 0; i < indices.length; i++) {
@@ -55,7 +64,34 @@ public class Benchmark {
             long start;
             long elapsed;
             long sum = 0;
-            if (workload.equals("W4")) {
+            if (workload.equals("BUILD")) {
+                MinHeap heap = new MinHeap();
+                metrics = heap.metrics();
+                start = System.nanoTime();
+                if (structure.equals("FloydBuild")) {
+                    heap.buildHeap(data);
+                } else {
+                    for (int value : data) {
+                        heap.insert(value);
+                    }
+                }
+                elapsed = System.nanoTime() - start;
+                long savedSteps = metrics.steps;
+                long savedMoves = metrics.moves;
+                long savedComparisons = metrics.comparisons;
+                int previous = Integer.MIN_VALUE;
+                while (heap.size() > 0) {
+                    int value = heap.extractMin();
+                    if (value < previous) {
+                        throw new IllegalStateException("Build output is not sorted");
+                    }
+                    previous = value;
+                    sum += value;
+                }
+                metrics.steps = savedSteps;
+                metrics.moves = savedMoves;
+                metrics.comparisons = savedComparisons;
+            } else if (workload.equals("W4")) {
                 MinHeap heap = new MinHeap();
                 int[] output = new int[n];
                 metrics = heap.metrics();

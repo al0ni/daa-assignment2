@@ -1,0 +1,28 @@
+Verification completed before release commits, 2026-10-04.
+
+Pass 1
+Clean Maven build: 13 JUnit 5 tests, 0 failures, 0 errors, 0 skipped.
+Full Benchmark run: 36 W1-W4 cases and 16 construction cases.
+Each case: 20 discarded warmups and 5 measured iterations.
+JOL: 12 structure/size combinations measured with successful attachment.
+These first-run times are the published CSV and report measurements.
+
+Pass 2
+Maven tests: 13 passed.
+Repeated all 52 benchmark cases and 12 memory measurements in a separate directory.
+Counters and memory totals matched pass 1 exactly.
+Reviewed source-level read/write, traversal, shift and comparison accounting.
+Reviewed complexity assumptions and both five-part loop-invariant proofs.
+
+Pass 3
+Maven tests: 13 passed.
+Repeated all 52 benchmark cases and 12 memory measurements again.
+Counters and memory totals matched pass 1 exactly; timing variation is expected.
+Independently reproduced Java Random(42) inputs and checked W1/W2 counters.
+Checked W3 counts from shift, growth and traversal formulas.
+Checked JOL totals against measured headers, fields, capacity and alignment.
+Verified exact CSV schemas and row counts, nonnegative counters and positive times.
+Verified no comments in Java sources and no production standard collections.
+Rendered and visually reviewed all six PDF pages and all six plots.
+Checked PDF text stays within margins; no page numbers or missing glyphs.
+Git diff whitespace check passed.
