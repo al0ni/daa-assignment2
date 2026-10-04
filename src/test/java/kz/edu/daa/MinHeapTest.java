@@ -75,7 +75,7 @@ class MinHeapTest {
         heap.insert(3);
         heap.metrics().reset();
         heap.insert(1);
-        assertEquals(4, heap.metrics().steps);
+        assertEquals(7, heap.metrics().steps);
         assertEquals(2, heap.metrics().moves);
         assertEquals(1, heap.metrics().comparisons);
         heap.metrics().reset();
@@ -83,9 +83,67 @@ class MinHeapTest {
         assertEquals(1, heap.metrics().steps);
         heap.metrics().reset();
         assertEquals(1, heap.extractMin());
-        assertEquals(2, heap.metrics().steps);
+        assertEquals(3, heap.metrics().steps);
         assertEquals(1, heap.metrics().moves);
         assertEquals(0, heap.metrics().comparisons);
+    }
+
+    @Test
+    void bottomUpBuildMatchesSortingAndOwnsItsStorage() {
+        Random random = new Random(42);
+        MinHeap heap = new MinHeap();
+        for (int n : new int[]{0, 1, 2, 3, 4, 17, 1000}) {
+            int[] input = new int[n];
+            for (int i = 0; i < n; i++) {
+                input[i] = random.nextInt(20) - 10;
+            }
+            int[] expected = input.clone();
+            heap.buildHeap(input);
+            assertArrayEquals(expected, input);
+            Arrays.sort(expected);
+            if (n > 0) {
+                input[0] = Integer.MAX_VALUE;
+            }
+            checkProperty(heap);
+            for (int value : expected) {
+                assertEquals(value, heap.extractMin());
+                checkProperty(heap);
+            }
+            heap.insert(5);
+            assertEquals(5, heap.extractMin());
+        }
+        heap.buildHeap(new int[]{Integer.MAX_VALUE, 0, Integer.MIN_VALUE});
+        assertEquals(Integer.MIN_VALUE, heap.extractMin());
+        assertThrows(IllegalArgumentException.class, () -> heap.buildHeap(null));
+        assertEquals(2, heap.size());
+    }
+
+    @Test
+    void bottomUpBuildUsesLinearComparisons() {
+        for (int n : new int[]{10, 100, 1000, 10000}) {
+            int[] input = new int[n];
+            for (int i = 0; i < n; i++) {
+                input[i] = n - i;
+            }
+            MinHeap heap = new MinHeap();
+            heap.buildHeap(input);
+            checkProperty(heap);
+            assertTrue(heap.metrics().comparisons < 2L * n);
+        }
+    }
+
+    @Test
+    void countsBuildReadsWritesAndKeyComparisons() {
+        MinHeap heap = new MinHeap();
+        heap.buildHeap(new int[]{3, 1, 2});
+        assertEquals(14, heap.metrics().steps);
+        assertEquals(5, heap.metrics().moves);
+        assertEquals(2, heap.metrics().comparisons);
+        heap.metrics().reset();
+        assertEquals(1, heap.extractMin());
+        assertEquals(5, heap.metrics().steps);
+        assertEquals(1, heap.metrics().moves);
+        assertEquals(1, heap.metrics().comparisons);
     }
 
     private void checkProperty(MinHeap heap) {
