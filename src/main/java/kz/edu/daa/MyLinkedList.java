@@ -42,6 +42,7 @@ public class MyLinkedList implements IntList {
         } else {
             Node previous = nodeAt(index - 1);
             node.next = previous.next;
+            metrics.steps++;
             previous.next = node;
         }
         metrics.moves += 2;
@@ -65,6 +66,7 @@ public class MyLinkedList implements IntList {
             removed = previous.next;
             metrics.steps++;
             previous.next = removed.next;
+            metrics.steps++;
             metrics.moves++;
             if (index == size - 1) {
                 tail = previous;
