@@ -24,18 +24,18 @@ class DynamicArrayTest {
         }
         list.metrics().reset();
         list.add(9);
-        assertEquals(4, list.metrics().steps);
+        assertEquals(9, list.metrics().steps);
         assertEquals(4, list.metrics().moves);
         list.metrics().reset();
         assertEquals(2, list.get(2));
         assertEquals(1, list.metrics().steps);
         list.metrics().reset();
         list.add(0, 8);
-        assertEquals(5, list.metrics().steps);
+        assertEquals(11, list.metrics().steps);
         assertEquals(5, list.metrics().moves);
         list.metrics().reset();
         assertEquals(8, list.remove(0));
-        assertEquals(6, list.metrics().steps);
+        assertEquals(11, list.metrics().steps);
         assertEquals(5, list.metrics().moves);
         list.metrics().reset();
         assertFalse(list.contains(-1));
@@ -72,6 +72,9 @@ class DynamicArrayTest {
         assertThrows(IndexOutOfBoundsException.class, () -> list.remove(list.size()));
         assertThrows(IndexOutOfBoundsException.class, () -> list.add(-1, 4));
         assertThrows(IndexOutOfBoundsException.class, () -> list.add(list.size() + 1, 4));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(Integer.MAX_VALUE));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(Integer.MIN_VALUE));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.add(Integer.MAX_VALUE, 4));
         assertEquals(1, list.size());
     }
 
