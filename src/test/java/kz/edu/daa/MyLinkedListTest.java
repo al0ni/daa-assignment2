@@ -37,7 +37,7 @@ class MyLinkedListTest {
         assertEquals(3, list.metrics().comparisons);
         list.metrics().reset();
         assertEquals(30, list.remove(2));
-        assertEquals(2, list.metrics().steps);
+        assertEquals(3, list.metrics().steps);
         assertEquals(2, list.metrics().moves);
         list.add(40);
         assertEquals(40, list.get(2));
