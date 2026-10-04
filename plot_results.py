@@ -4,10 +4,13 @@ import matplotlib.pyplot as plt
 
 with open("results/results.csv", newline="") as file:
     rows = list(csv.DictReader(file))
+with open("results/build_heap.csv", newline="") as file:
+    rows.extend(csv.DictReader(file))
 
 Path("results/plots").mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 12, "axes.titlesize": 14, "legend.fontsize": 9})
 titles = {"W1": "Random access", "W2": "Search", "W3": "Insert and remove", "W4": "Priority processing"}
+titles["BUILD"] = "Heap construction"
 colors = ["#1764ab", "#d26520", "#278552", "#9853a1"]
 
 for workload, title in titles.items():
@@ -39,3 +42,18 @@ for workload, title in titles.items():
     figure.legend(handles, labels, loc="lower center", ncol=2, frameon=False, fontsize=10)
     figure.savefig("results/plots/" + workload.lower() + ".png", dpi=180)
     plt.close(figure)
+
+with open("results/memory.csv", newline="") as file:
+    memory = list(csv.DictReader(file))
+figure, axis = plt.subplots(figsize=(10, 5.4))
+for structure in ["DynamicArray", "MyLinkedList", "MinHeap"]:
+    selected = [row for row in memory if row["structure"] == structure]
+    axis.plot([int(row["n"]) for row in selected], [int(row["bytes"]) for row in selected],
+              marker="o", label=structure, linestyle="--" if structure == "MinHeap" else "-")
+axis.set(xscale="log", yscale="log", xlabel="n (elements)", ylabel="Reachable bytes",
+         title="JOL memory footprint (including Metrics)")
+axis.grid(True, alpha=0.25)
+axis.legend()
+figure.tight_layout()
+figure.savefig("results/plots/memory.png", dpi=180)
+plt.close(figure)

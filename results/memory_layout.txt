@@ -1,0 +1,56 @@
+# VM mode: 64 bits
+# Compressed references (oops): 3-bit shift
+# Compressed class pointers: 0-bit shift and 0x98000000 base
+# Object alignment: 8 bytes
+#                       ref, bool, byte, char, shrt,  int,  flt,  lng,  dbl
+# Field sizes:            4,    1,    1,    2,    2,    4,    4,    8,    8
+# Array element sizes:    4,    1,    1,    2,    2,    4,    4,    8,    8
+# Array base offsets:    16,   16,   16,   16,   16,   16,   16,   16,   16
+kz.edu.daa.MyLinkedList$Node object internals:
+OFF  SZ                           TYPE DESCRIPTION               VALUE
+  0   8                                (object header: mark)     N/A
+  8   4                                (object header: class)    N/A
+ 12   4                            int Node.value                N/A
+ 16   4   kz.edu.daa.MyLinkedList.Node Node.next                 N/A
+ 20   4                                (object alignment gap)
+Instance size: 24 bytes
+Space losses: 0 bytes internal + 4 bytes external = 4 bytes total
+kz.edu.daa.DynamicArray object internals:
+OFF  SZ                 TYPE DESCRIPTION               VALUE
+  0   8                      (object header: mark)     N/A
+  8   4                      (object header: class)    N/A
+ 12   4                  int DynamicArray.size         N/A
+ 16   4                int[] DynamicArray.data         N/A
+ 20   4   kz.edu.daa.Metrics DynamicArray.metrics      N/A
+Instance size: 24 bytes
+Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
+kz.edu.daa.MyLinkedList object internals:
+OFF  SZ                           TYPE DESCRIPTION               VALUE
+  0   8                                (object header: mark)     N/A
+  8   4                                (object header: class)    N/A
+ 12   4                            int MyLinkedList.size         N/A
+ 16   4   kz.edu.daa.MyLinkedList.Node MyLinkedList.head         N/A
+ 20   4   kz.edu.daa.MyLinkedList.Node MyLinkedList.tail         N/A
+ 24   4             kz.edu.daa.Metrics MyLinkedList.metrics      N/A
+ 28   4                                (object alignment gap)
+Instance size: 32 bytes
+Space losses: 0 bytes internal + 4 bytes external = 4 bytes total
+kz.edu.daa.MinHeap object internals:
+OFF  SZ                 TYPE DESCRIPTION               VALUE
+  0   8                      (object header: mark)     N/A
+  8   4                      (object header: class)    N/A
+ 12   4                  int MinHeap.size              N/A
+ 16   4                int[] MinHeap.data              N/A
+ 20   4   kz.edu.daa.Metrics MinHeap.metrics           N/A
+Instance size: 24 bytes
+Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
+kz.edu.daa.Metrics object internals:
+OFF  SZ   TYPE DESCRIPTION               VALUE
+  0   8        (object header: mark)     N/A
+  8   4        (object header: class)    N/A
+ 12   4        (alignment/padding gap)
+ 16   8   long Metrics.steps             N/A
+ 24   8   long Metrics.moves             N/A
+ 32   8   long Metrics.comparisons       N/A
+Instance size: 40 bytes
+Space losses: 4 bytes internal + 0 bytes external = 4 bytes total
