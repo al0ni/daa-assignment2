@@ -17,17 +17,18 @@ public class DynamicArray implements IntList {
             int[] larger = new int[data.length * 2];
             for (int i = 0; i < size; i++) {
                 larger[i] = data[i];
-                metrics.steps++;
+                metrics.steps += 2;
                 metrics.moves++;
             }
             data = larger;
         }
         for (int i = size; i > index; i--) {
             data[i] = data[i - 1];
-            metrics.steps++;
+            metrics.steps += 2;
             metrics.moves++;
         }
         data[index] = value;
+        metrics.steps++;
         size++;
     }
 
@@ -37,7 +38,7 @@ public class DynamicArray implements IntList {
         metrics.steps++;
         for (int i = index; i < size - 1; i++) {
             data[i] = data[i + 1];
-            metrics.steps++;
+            metrics.steps += 2;
             metrics.moves++;
         }
         size--;
